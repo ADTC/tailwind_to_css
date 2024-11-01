@@ -19,6 +19,7 @@ export default function App() {
 	useEffect(() => {
 		setResult('');
 		setResultJSS('');
+		if (!input.trim()) return;
 
 		const handler = setTimeout(async () => {
 			const resultCss = await getConvertedClasses(input);
@@ -87,7 +88,7 @@ export default function App() {
 						value={result}
 						readOnly
 					></textarea>
-					<CopyToClipboard text={result.trim()} onCopy={() => toast.success('Copied!')}>
+					<CopyToClipboard text={result} onCopy={() => toast.success('Copied!')}>
 						<ClipboardCopyIcon className="w-6 h-6 mt-3 text-gray-500 cursor-pointer md:mr-1" />
 					</CopyToClipboard>
 				</div>

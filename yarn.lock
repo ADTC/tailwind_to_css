@@ -190,6 +190,11 @@
   dependencies:
     tslib "^2.4.0"
 
+"@types/cssbeautify@^0.3.5":
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/@types/cssbeautify/-/cssbeautify-0.3.5.tgz#b44fe836901b4277be27027b90ca1f9f54fd2538"
+  integrity sha512-bkxuJdUu7Liw14EouI8IFNvJXvd5IioAZdDvlCFBXv+Sel8uPK9rcxfvOchQKqw2AtppxRvcYaWmimi0t0Yuow==
+
 "@types/json5@^0.0.29":
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
@@ -595,6 +600,11 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.2:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
     which "^2.0.1"
+
+cssbeautify@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/cssbeautify/-/cssbeautify-0.3.1.tgz#12dd1f734035c2e6faca67dcbdcef74e42811397"
+  integrity sha512-ljnSOCOiMbklF+dwPbpooyB78foId02vUrTDogWzu6ca2DCNB7Kc/BHEGBnYOlUYtwXvSW0mWTwaiO2pwFIoRg==
 
 cssesc@^3.0.0:
   version "3.0.0"

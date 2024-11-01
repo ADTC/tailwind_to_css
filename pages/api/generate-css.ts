@@ -2,6 +2,7 @@ import postcss from "postcss";
 import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
 import { NextApiRequest, NextApiResponse } from "next";
+import cssbeautify from "cssbeautify";
 
 interface RequestBody {
   classes: string;
@@ -41,11 +42,14 @@ export default async function handler(
           css = "no: result;";
         }
 
-        // Format the CSS
-        css = css.replace(/^\s+/gm, "  ");
-        css = css.replace(/^\s*\.generated/gm, ".generated");
+        // Format the CSS using cssbeautify
+        css = cssbeautify(css, {
+          indent: "  ",
+          openbrace: "end-of-line",
+          autosemicolon: true,
+        });
 
-        return css;
+        return css.trim();
       });
 
     res.status(200).send(result);
