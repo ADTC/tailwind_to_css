@@ -111,7 +111,26 @@ function getAppliedCSSRules(element: HTMLElement) {
     return appliedRules;
 }
 
-export const getConvertedClasses = (input: string) => {
+export const getConvertedClasses = async (input: string) => {
+    try {
+        const response = await fetch('/api/generate-css', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ classes: input }),
+        });
+
+        if (!response.ok) throw new Error('Failed to generate CSS');
+
+        const css = await response.text();
+        return css;
+    } catch (err) {
+        return String(err.message || "Error");
+    }
+}
+
+export const getConvertedClassesOld2 = (input: string) => {
     // Create the element
     const element = document.createElement('DIV');
     document.body.appendChild(element);

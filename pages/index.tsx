@@ -20,8 +20,8 @@ export default function App() {
 		setResult('');
 		setResultJSS('');
 
-		const handler = setTimeout(() => {
-			const resultCss = getConvertedClasses(input);
+		const handler = setTimeout(async () => {
+			const resultCss = await getConvertedClasses(input);
 			const resultJSS = convertFromCssToJss(resultCss);
 			setResult(resultCss);
 			setResultJSS(resultJSS);
@@ -87,7 +87,7 @@ export default function App() {
 						value={result}
 						readOnly
 					></textarea>
-					<CopyToClipboard text={result} onCopy={() => toast.success('Copied!')}>
+					<CopyToClipboard text={result.trim()} onCopy={() => toast.success('Copied!')}>
 						<ClipboardCopyIcon className="w-6 h-6 mt-3 text-gray-500 cursor-pointer md:mr-1" />
 					</CopyToClipboard>
 				</div>
