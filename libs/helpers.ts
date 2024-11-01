@@ -85,7 +85,50 @@ const getHoverClass = (input: string) => {
         .map((i) => i.replace("hover:", ""));
 };
 
-export const getConvertedClasses = (input) => {
+// Function to get applied CSS rules
+function getAppliedCSSRules(element: HTMLElement) {
+    const stylesheets = Array.from(document.styleSheets);
+    const appliedRules = [];
+
+    stylesheets.forEach(sheet => {
+        try {
+            const rules = Array.from(sheet.cssRules);
+
+            rules.forEach(rule => {
+                if (rule instanceof CSSStyleRule && element.matches(rule.selectorText)) {
+                    let css = rule.cssText;
+                    if (!css.startsWith('.')) return;
+                    css = css.substring(css.indexOf('{') + 1, css.lastIndexOf('}')).trim();
+                    css = css.replace(/; /g, ';\n');
+                    appliedRules.push(css);
+                }
+            });
+        } catch (e) {
+            console.warn('Access to stylesheet is restricted:', sheet.href);
+        }
+    });
+
+    return appliedRules;
+}
+
+export const getConvertedClasses = (input: string) => {
+    // Create the element
+    const element = document.createElement('DIV');
+    document.body.appendChild(element);
+
+    // Apply the Tailwind classes
+    element.className = input;
+
+    // Get applied CSS rules
+    const appliedRules = getAppliedCSSRules(element);
+    const concatenatedRules = appliedRules.join('\n');
+
+    // Remove the element
+    element.remove();
+    return concatenatedRules;
+}
+
+export const getConvertedClassesOld = (input) => {
 
     if (input === "") return "";
 
@@ -130,7 +173,7 @@ ${hoverClasses.length !== 0 ? `:hover {\n ${convertToCss(hoverClasses)} }` : ""}
 export const convertFromCssToJss = (css: string) => {
     try {
         const root = postcss.parse(css);
-        const jss = JSON.stringify(postcssJs.objectify(root))
+        const jss = JSON.stringify(postcssJs.objectify(root), null, 2)
         return jss;
     } catch (e) {
         console.log(e);

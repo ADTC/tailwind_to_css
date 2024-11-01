@@ -17,10 +17,17 @@ export default function App() {
 	const [resultJSS, setResultJSS] = useState('');
 
 	useEffect(() => {
-		const resultCss = getConvertedClasses(input);
-		const resultJSS = convertFromCssToJss(resultCss);
-		setResult(resultCss);
-		setResultJSS(resultJSS);
+		setResult('');
+		setResultJSS('');
+
+		const handler = setTimeout(() => {
+			const resultCss = getConvertedClasses(input);
+			const resultJSS = convertFromCssToJss(resultCss);
+			setResult(resultCss);
+			setResultJSS(resultJSS);
+		}, 1000);
+
+		return () => clearTimeout(handler);
 	}, [input]);
 
 	return (
