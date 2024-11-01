@@ -23,19 +23,28 @@ export default async function handler(
   `;
 
   try {
-    const result = await postcss([tailwindcss, autoprefixer])
+    const result = await postcss([
+      tailwindcss({
+        config: { content: ["./*.none"], corePlugins: { preflight: false } },
+      }),
+      autoprefixer,
+    ])
       .process(css, { from: undefined })
       .then((result) => {
         let css = result.css;
-        // Extract the part between ".generated {" and nearest "}" over multiple lines
-        const generatedClasses = css.match(/\.generated \{([^}]*)\}/s);
-        if (generatedClasses) {
-          css = generatedClasses[1];
-          // Trim all lines to remove extra spaces in beginning but keep new lines
-          css = css.replace(/^[ \t]+/gm, "");
+
+        // Find ".generated" text and extract everything after it.
+        const generatedIndex = css.indexOf(".generated");
+        if (generatedIndex !== -1) {
+          css = css.substring(generatedIndex);
         } else {
           css = "no: result;";
         }
+
+        // Format the CSS
+        css = css.replace(/^\s+/gm, "  ");
+        css = css.replace(/^\s*\.generated/gm, ".generated");
+
         return css;
       });
 
