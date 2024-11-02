@@ -1,8 +1,10 @@
-import postcss, { type CssSyntaxError } from "postcss";
+import postcss from "postcss";
 import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
-import { NextApiRequest, NextApiResponse } from "next";
 import cssbeautify from "cssbeautify";
+
+import type { NextApiRequest, NextApiResponse } from "next";
+import type { ProcessOptions, CssSyntaxError } from "postcss";
 
 interface RequestBody {
   classes: string;
@@ -14,6 +16,8 @@ const processor = postcss([
   }),
   autoprefixer,
 ]);
+
+const processOptions: ProcessOptions = { from: undefined };
 
 const beautifyOptions: Parameters<typeof cssbeautify>[1] = {
   indent: "  ",
@@ -35,7 +39,7 @@ export default async function handler(
       const css = `.generated { @apply ${classes.join(" ")}; }`;
 
       let result = await processor
-        .process(css, { from: undefined })
+        .process(css, processOptions)
         .then((result) => result.css);
 
       if (customClasses.length) {
@@ -62,13 +66,17 @@ export default async function handler(
 
           //
         } else {
-          res.status(500).send(error.toString());
+          res
+            .status(200)
+            .send(error.reason || error.toString() || "500 Server Error");
           doneProcessing = true;
         }
 
         //
       } else {
-        res.status(500).send(error.toString());
+        res
+          .status(200)
+          .send(error?.reason || error?.toString() || "500 Server Error");
         doneProcessing = true;
       }
     }
