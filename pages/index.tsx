@@ -11,21 +11,23 @@ import Logo from '../public/logo.svg';
 
 export default function App() {
 	const [input, setInput] = useState('');
-
 	const [result, setResult] = useState('');
-
+	const [resultPlaceholder, setResultPlaceholder] = useState('CSS');
 	const [resultJSS, setResultJSS] = useState('');
 
 	useEffect(() => {
 		setResult('');
 		setResultJSS('');
+		setResultPlaceholder('CSS');
 		if (!input.trim()) return;
 
+		setResultPlaceholder('Processing...');
 		const handler = setTimeout(async () => {
 			const resultCss = await getConvertedClasses(input);
 			const resultJSS = convertFromCssToJss(resultCss);
 			setResult(resultCss);
 			setResultJSS(resultJSS);
+			setResultPlaceholder('CSS');
 		}, 1000);
 
 		return () => clearTimeout(handler);
@@ -84,7 +86,7 @@ export default function App() {
 				<div className="flex w-full bg-[#111] border-l border-gray-700">
 					<textarea
 						className="w-full resize-none flex-grow p-3 bg-[#111] text-gray-300 outline-none"
-						placeholder="CSS"
+						placeholder={resultPlaceholder}
 						value={result}
 						readOnly
 					></textarea>
