@@ -32,7 +32,7 @@ export default function App() {
 	}, [input]);
 
 	return (
-		<main>
+		<main className="flex flex-col h-screen">
 			<nav className="w-full">
 				<Head>
 					<title>Tailwind To CSS</title>
@@ -71,7 +71,7 @@ export default function App() {
 				</header>
 			</nav>
 
-			<section className="flex flex-col-reverse md:flex-row bg-gray-900 h-screen ">
+			<section className="flex flex-1 flex-col-reverse md:flex-row bg-gray-900">
 				<textarea
 					className="w-full resize-none  border-none flex-grow p-3 bg-[#111] text-gray-300  outline-none "
 					value={input}
